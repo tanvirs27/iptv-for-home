@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IPTV for Home</title>
+
+  <link href="dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <link href="css/theme2.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+
+  <script defer src="/__/firebase/7.3.0/firebase-app.js"></script>
+  <script defer src="/__/firebase/7.3.0/firebase-database.js"></script>
+  <script defer src="/__/firebase/init.js"></script>
+</head>
+
+<body>
+
+  <div class="col-sm-8 offset-sm-2" style="margin-top: 65px;">
+    <div id="success-alert" class="alert alert-success alert-dismissable" style="display: none;" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+      Channel save/update successful
+    </div>
+
+    <div id="error-alert" class="alert alert-danger alert-dismissable" style="display: none;" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+      Something wrong happened!
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h4>IPTV for Home</h4>
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          <h5>Add Channel</h5>
+        </div>
+        <form id="channel-form">
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label form-control-label"><span class="text-danger">*</span>
+              Unique ID</label>
+            <div class="col-md-7">
+              <input id="chid" class="form-control" type="text" required>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label form-control-label"><span class="text-danger">*</span>
+              Title</label>
+            <div class="col-md-7">
+              <input id="title" class="form-control" type="text" required>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label form-control-label"><span class="text-danger">*</span>
+              Category</label>
+            <div class="col-md-7">
+              <input id="category" class="form-control" type="text" required>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label form-control-label"><span class="text-danger">*</span>
+              Link</label>
+            <div class="col-md-7">
+              <input id="link" class="form-control" type="text" required>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-10 text-right">
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="dist/js/jquery-3.4.1.min.js"><\/script>')</script>
+  <script src="dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+    crossorigin="anonymous"></script>
+
+  <script>
+    var form = $("form#channel-form");
+    form.submit(function (event) {
+      event.preventDefault();
+
+      firebase.database().ref('channels/' + $("#chid").val()).set({
+        "title": $("#title").val(),
+        "category": $("#category").val(),
+        "link": $("#link").val()
+      }, function (error) {
+        if (error) {
+          $("#error-alert").show().addClass("show fade");
+        } else {
+          $("#success-alert").show().addClass("show fade");
+        }
+      });
+
+      $('html,body').animate({ scrollTop: 0 }, 'slow');
+
+      return false;
+    });
+
+  </script>
+</body>
+</html>
